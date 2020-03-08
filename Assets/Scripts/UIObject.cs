@@ -1,57 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.UI;
 
-public class UIObject : MonoBehaviour, IMoveable
+public class UIObject : MonoBehaviour
 {
-    public bool selected { get; set; }
-    Vector3 movementVector;
-    float movementSpeed = 0.5f;
+    [SerializeField] Sprite empty;
+    [SerializeField] Sprite selectedOverlay;
+    public RectTransform rectTransform;
+    Image imageRenderer;
+    Image overlayRenderer;
 
-    void Start()
-    {
-        Select();
+    Guid guid;
+    private bool selected; // Property Value
+
+    public bool Selected { 
+        get
+        {
+            return selected;
+        }
+        set
+        {
+            selected = value;
+            overlayRenderer.sprite = value ? selectedOverlay : empty;
+        }
     }
 
-    void FixedUpdate()
+    private void Awake()
     {
-        Move();
+        guid = Guid.NewGuid();
+        rectTransform = GetComponent<RectTransform>();
+        imageRenderer = GetComponent<Image>();
+        overlayRenderer = transform.GetChild(0).GetComponent<Image>();
     }
 
-    public void Select()
+    private void Start()
     {
-        selected = true;
+        Selected = false;
     }
 
-    public void Deselect()
+    private void OnEnable()
     {
-        selected = false;
+        UIController.instance.uiObjects.Add(this);
     }
 
-    public void Move()
+    private void OnDisable()
     {
-        movementVector = Vector3.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            movementVector.y = movementSpeed;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movementVector.y = -movementSpeed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movementVector.x = movementSpeed;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movementVector.x = -movementSpeed;
-        }
+        if (UIController.instance == null) { return; }
+        UIController.instance.uiObjects.Remove(this);
+    }
 
-        if (true)
-        {
-            transform.position += movementVector;
+    public void SetVisible(bool _visible)
+    {
+        imageRenderer.enabled = _visible;
+        overlayRenderer.enabled = _visible;
+    }
 
-        }
+    public override bool Equals(object obj)
+    {
+        if (obj == null) { return false; }
+        UIObject objAsUIObject = obj as UIObject;
+        if (objAsUIObject == null) { return false; }
+        else return base.Equals(objAsUIObject);
+    }
+
+    public bool Equals(UIObject other)
+    {
+        if (other == null) { return false; }
+        return (this.guid.Equals(other.guid));
     }
 }
