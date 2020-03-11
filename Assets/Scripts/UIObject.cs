@@ -4,70 +4,74 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class UIObject : MonoBehaviour
+namespace Game
 {
-    [SerializeField] Sprite empty;
-    [SerializeField] Sprite selectedOverlay;
-    public RectTransform rectTransform;
-    Image imageRenderer;
-    Image overlayRenderer;
+    public class UIObject : MonoBehaviour
+    {
+        [SerializeField] Sprite empty;
+        [SerializeField] Sprite selectedOverlay;
+        public RectTransform rectTransform;
+        Image imageRenderer;
+        Image overlayRenderer;
 
-    Guid guid;
-    private bool selected; // Property Value
+        Guid guid;
+        private bool selected; // Property Value
 
-    public bool Selected { 
-        get
+        public bool Selected
         {
-            return selected;
+            get
+            {
+                return selected;
+            }
+            set
+            {
+                selected = value;
+                overlayRenderer.sprite = value ? selectedOverlay : empty;
+            }
         }
-        set
+
+        private void Awake()
         {
-            selected = value;
-            overlayRenderer.sprite = value ? selectedOverlay : empty;
+            guid = Guid.NewGuid();
+            rectTransform = GetComponent<RectTransform>();
+            imageRenderer = GetComponent<Image>();
+            overlayRenderer = transform.GetChild(0).GetComponent<Image>();
         }
-    }
 
-    private void Awake()
-    {
-        guid = Guid.NewGuid();
-        rectTransform = GetComponent<RectTransform>();
-        imageRenderer = GetComponent<Image>();
-        overlayRenderer = transform.GetChild(0).GetComponent<Image>();
-    }
+        private void Start()
+        {
+            Selected = false;
+        }
 
-    private void Start()
-    {
-        Selected = false;
-    }
+        private void OnEnable()
+        {
+            UIController.instance.uiObjects.Add(this);
+        }
 
-    private void OnEnable()
-    {
-        UIController.instance.uiObjects.Add(this);
-    }
+        private void OnDisable()
+        {
+            if (UIController.instance == null) { return; }
+            UIController.instance.uiObjects.Remove(this);
+        }
 
-    private void OnDisable()
-    {
-        if (UIController.instance == null) { return; }
-        UIController.instance.uiObjects.Remove(this);
-    }
+        public void SetVisible(bool _visible)
+        {
+            imageRenderer.enabled = _visible;
+            overlayRenderer.enabled = _visible;
+        }
 
-    public void SetVisible(bool _visible)
-    {
-        imageRenderer.enabled = _visible;
-        overlayRenderer.enabled = _visible;
-    }
+        public override bool Equals(object obj)
+        {
+            if (obj == null) { return false; }
+            UIObject objAsUIObject = obj as UIObject;
+            if (objAsUIObject == null) { return false; }
+            else return base.Equals(objAsUIObject);
+        }
 
-    public override bool Equals(object obj)
-    {
-        if (obj == null) { return false; }
-        UIObject objAsUIObject = obj as UIObject;
-        if (objAsUIObject == null) { return false; }
-        else return base.Equals(objAsUIObject);
-    }
-
-    public bool Equals(UIObject other)
-    {
-        if (other == null) { return false; }
-        return (this.guid.Equals(other.guid));
+        public bool Equals(UIObject other)
+        {
+            if (other == null) { return false; }
+            return (this.guid.Equals(other.guid));
+        }
     }
 }
