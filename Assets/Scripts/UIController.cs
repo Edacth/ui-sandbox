@@ -9,6 +9,7 @@ namespace Game
     public class UIController : SCP_Singleton<UIController>
     {
         [SerializeField] Camera mainCamera;
+        [SerializeField] public GameObject canvas;
         public List<UIObject> uiObjects;
 
         [Tooltip("How much mouse movement to ignore before it becomes a drag")]

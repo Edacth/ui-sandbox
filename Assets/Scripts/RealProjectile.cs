@@ -4,8 +4,12 @@ using UnityEngine;
 
 namespace Game
 {
-    public class RealProjectile : MonoBehaviour
+    public class RealProjectile : Projectile
     {
-        public CARDINAL direction = CARDINAL.West;
+
+        protected override void Move()
+        {
+
+        }
     }
 }

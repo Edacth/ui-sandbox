@@ -4,17 +4,16 @@ using UnityEngine;
 
 namespace Game
 {
-    public class UIProjectile : MonoBehaviour
+    public class UIProjectile : Projectile
     {
-        public CARDINAL direction;
-        float speed;
+        RectTransform rectTransform;
 
-        public void Init(CARDINAL _direction)
+        private void Awake()
         {
-            direction = _direction;
+            rectTransform = GetComponent<RectTransform>();
         }
 
-        void FixedUpdate()
+        protected override void Move()
         {
             transform.position += DirectionDict.dirDict[direction];
         }

@@ -8,12 +8,18 @@ namespace Game
     {
         public CARDINAL direction;
         [SerializeField] GameObject UIProjecile;
+        RectTransform rectTransform;
+
+        private void Awake()
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
 
         public void Shoot()
         {
             Debug.Log("Shoot");
-            UIProjectile projectile = Instantiate(UIProjecile).GetComponent<UIProjectile>();
-            projectile.Init(direction);
+            UIProjectile projectile = Instantiate(UIProjecile, UIController.instance.canvas.transform).GetComponent<UIProjectile>();
+            projectile.Init(rectTransform.position, direction);
         }
     }
 }
