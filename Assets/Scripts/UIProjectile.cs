@@ -13,9 +13,16 @@ namespace Game
             rectTransform = GetComponent<RectTransform>();
         }
 
+        public override void Init(Vector3 _position, CARDINAL _direction, float _speed)
+        {
+            rectTransform.position = _position;
+            direction = _direction;
+            speed = _speed;
+        }
+
         protected override void Move()
         {
-            transform.position += DirectionDict.dirDict[direction];
+            transform.position += DirectionDict.dirDict[direction] * speed;
         }
     }
 }

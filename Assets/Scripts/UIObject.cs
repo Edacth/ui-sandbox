@@ -32,10 +32,7 @@ namespace Game
 
         private void Awake()
         {
-            guid = Guid.NewGuid();
-            rectTransform = GetComponent<RectTransform>();
-            imageRenderer = GetComponent<Image>();
-            overlayRenderer = transform.GetChild(0).GetComponent<Image>();
+            UIObjectInit();
         }
 
         private void Start()
@@ -52,6 +49,14 @@ namespace Game
         {
             if (UIController.instance == null) { return; }
             UIController.instance.uiObjects.Remove(this);
+        }
+
+        protected void UIObjectInit()
+        {
+            guid = Guid.NewGuid();
+            rectTransform = GetComponent<RectTransform>();
+            imageRenderer = GetComponent<Image>();
+            overlayRenderer = transform.GetChild(0).GetComponent<Image>();
         }
 
         public void SetVisible(bool _visible)
