@@ -18,14 +18,12 @@ namespace Game
             boxCollider = GetComponent<BoxCollider2D>();
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        public void OnProjectileHit(RealProjectile _realProjectile)
         {
-            Debug.Log(gameObject.name + " " + collision.name);
-            if (onPlayerProjecileHit != null && collision.CompareTag("Projectile"))
+            if (onPlayerProjecileHit != null)
             {
-                RealProjectile realProjectile = collision.gameObject.GetComponent<RealProjectile>();
-                if (realProjectile == null) { return; }
-                onPlayerProjecileHit.Invoke(realProjectile, receptionDirection);
+                if (_realProjectile == null) { return; }
+                onPlayerProjecileHit.Invoke(_realProjectile, receptionDirection);
             }
         }
     }

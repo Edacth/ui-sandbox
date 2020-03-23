@@ -4,25 +4,46 @@ using UnityEngine;
 
 namespace Game
 {
-    public class UIProjectile : Projectile
+    public class UIProjectile : UIObject
     {
-        RectTransform rectTransform;
+        [SerializeField] public CARDINAL direction;
+        [SerializeField] protected float speed;
 
         private void Awake()
         {
-            rectTransform = GetComponent<RectTransform>();
+            UIObjectInit();
         }
 
-        public override void Init(Vector3 _position, CARDINAL _direction, float _speed)
+        private void FixedUpdate()
+        {
+            Move();
+            DetectCollision();
+        }
+
+        public void Init(Vector3 _position, CARDINAL _direction, float _speed)
         {
             rectTransform.position = _position;
             direction = _direction;
             speed = _speed;
         }
 
-        protected override void Move()
+        protected void Move()
         {
             transform.position += DirectionDict.dirDict[direction] * speed;
+        }
+
+        void DetectCollision()
+        {
+            UIObject[] overlapObjects = UIController.instance.GetOverlappingUIObjects(this);
+            if (overlapObjects.Length > 0)
+            {
+                Debug.Log("");
+            }
+        }
+
+        void OnHit()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -51,7 +51,7 @@ namespace Game
             {
                 if ((mousePos - lastTickMousePos).magnitude >= dragThreshhold)
                 {
-                    MoveUIObjects(mousePos - lastTickMousePos, true);
+                    MoveUIObjects(mainCamera.ScreenToWorldPoint(mousePos) - mainCamera.ScreenToWorldPoint(lastTickMousePos), true);
                     thisClickMoved = true;
                 }
             }
@@ -66,7 +66,7 @@ namespace Game
                 leftMouseHeld = true;
 
                 // Select UIObjects
-                UIObject[] matchingObjects = GetUIObjectsAtPoint(mousePos);
+                UIObject[] matchingObjects = GetUIObjectsAtPoint(mainCamera.ScreenToWorldPoint(mousePos));
                 for (int i = 0; i < matchingObjects.Length; i++)
                 {
                     if (!matchingObjects[i].Selected)
@@ -85,7 +85,7 @@ namespace Game
                 // Deselect UIObjects if we didn't select an object this frame
                 if (!thisClickSelected && !thisClickMoved)
                 {
-                    UIObject[] matchingObjects = GetUIObjectsAtPoint(mousePos);
+                    UIObject[] matchingObjects = GetUIObjectsAtPoint(mainCamera.ScreenToWorldPoint(mousePos));
 
                     for (int i = 0; i < matchingObjects.Length; i++)
                     {
@@ -109,7 +109,7 @@ namespace Game
         {
             if (Application.isPlaying)
             {
-                Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+                Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mousePos);
                 Gizmos.DrawSphere(mouseWorldPos, 0.2f);
                 Gizmos.DrawSphere(Input.mousePosition, 5f);
             }
@@ -140,6 +140,23 @@ namespace Game
 
                 if (_point.x <= topRightCorner.x && _point.y <= topRightCorner.y &&
                     _point.x >= bottomLeftCorner.x && _point.y >= bottomLeftCorner.y)
+                {
+                    matchingObjects.Add(uiObjects[i]);
+                }
+            }
+
+            return matchingObjects.ToArray();
+        }
+
+        public UIObject[] GetOverlappingUIObjects(UIObject _UIObject)
+        {
+            List<UIObject> matchingObjects = new List<UIObject>();
+            Rect rect1 = new Rect(_UIObject.rectTransform.position.x, _UIObject.rectTransform.position.y, _UIObject.rectTransform.rect.width, _UIObject.rectTransform.rect.height);
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                if (uiObjects[i].Guid == _UIObject.Guid) { continue; }
+                Rect rect2 = new Rect(uiObjects[i].rectTransform.position.x, uiObjects[i].rectTransform.position.y, uiObjects[i].rectTransform.rect.width, uiObjects[i].rectTransform.rect.height);
+                if (rect1.Overlaps(rect2))
                 {
                     matchingObjects.Add(uiObjects[i]);
                 }

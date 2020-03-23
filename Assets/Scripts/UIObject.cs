@@ -8,13 +8,19 @@ namespace Game
 {
     public class UIObject : MonoBehaviour
     {
+        [SerializeField] bool selectable;
         [SerializeField] Sprite empty;
         [SerializeField] Sprite selectedOverlay;
         public RectTransform rectTransform;
         Image imageRenderer;
         Image overlayRenderer;
 
-        Guid guid;
+        public Guid Guid
+        {
+            get;
+            private set;
+        }
+
         private bool selected; // Property Value
 
         public bool Selected
@@ -26,6 +32,7 @@ namespace Game
             set
             {
                 selected = value;
+                if (!selectable) { return; }
                 overlayRenderer.sprite = value ? selectedOverlay : empty;
             }
         }
@@ -53,7 +60,7 @@ namespace Game
 
         protected void UIObjectInit()
         {
-            guid = Guid.NewGuid();
+            Guid = Guid.NewGuid();
             rectTransform = GetComponent<RectTransform>();
             imageRenderer = GetComponent<Image>();
             overlayRenderer = transform.GetChild(0).GetComponent<Image>();
@@ -76,7 +83,7 @@ namespace Game
         public bool Equals(UIObject other)
         {
             if (other == null) { return false; }
-            return (this.guid.Equals(other.guid));
+            return (this.Guid.Equals(other.Guid));
         }
     }
 }

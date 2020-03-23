@@ -2,41 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+namespace Game
 {
-    Vector3 movementVector;
-    
-
-    void Start()
+    public class PlayerMovement : MonoBehaviour
     {
-        
-    }
+        Vector3 movementVector;
 
-    private void FixedUpdate()
-    {
-        movementVector = Vector3.zero;
-        if (Input.GetKeyDown(KeyCode.W))
+
+        void Start()
         {
-            movementVector.y = 1;
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            movementVector.y = -1;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            movementVector.x = 1;
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            movementVector.x = -1;
+
         }
 
-        if (true)
+        private void Update()
         {
-            transform.position += movementVector;
-            
+            movementVector = Vector3.zero;
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                movementVector.y = 1;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                movementVector.y = -1;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                movementVector.x = 1;
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                movementVector.x = -1;
+            }
+
+            if (true)
+            {
+                transform.position += movementVector;
+                Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
+                UIController.instance.canvas.transform.position = transform.position;
+            }
         }
-        
     }
 }

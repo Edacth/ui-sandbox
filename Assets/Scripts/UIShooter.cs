@@ -16,9 +16,9 @@ namespace Game
 
         public void Shoot()
         {
-            Debug.Log("Shoot");
+            if ( UIProjecile == null ) { Debug.LogError("UIProjectile is null", this); return; }
             UIProjectile projectile = Instantiate(UIProjecile, UIController.instance.canvas.transform).GetComponent<UIProjectile>();
-            projectile.Init(rectTransform.position, direction, 10f);
+            projectile.Init(rectTransform.position, direction, 0.1f);
         }
     }
 }
