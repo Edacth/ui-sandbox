@@ -173,7 +173,7 @@ namespace Game
             }
         }
 
-        public void ShootInUI(CARDINAL _dir)
+        public void ShootInUI(CARDINAL _dir, PROJTYPE _type)
         {
             for (int i = 0; i < uiObjects.Count; i++)
             {
@@ -181,7 +181,7 @@ namespace Game
 
                 if (uiShooter != null && uiShooter.direction == _dir)
                 {
-                    uiShooter.Shoot();
+                    uiShooter.Shoot(_type);
                 }
             }
         }

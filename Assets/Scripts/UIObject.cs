@@ -12,8 +12,9 @@ namespace Game
         [SerializeField] Sprite empty;
         [SerializeField] Sprite selectedOverlay;
         public RectTransform rectTransform;
-        Image imageRenderer;
-        Image overlayRenderer;
+
+        protected SpriteRenderer spriteRenderer;
+        protected SpriteRenderer overlayRenderer;
 
         public Guid Guid
         {
@@ -31,8 +32,8 @@ namespace Game
             }
             set
             {
-                selected = value;
                 if (!selectable) { return; }
+                selected = value;
                 overlayRenderer.sprite = value ? selectedOverlay : empty;
             }
         }
@@ -62,13 +63,13 @@ namespace Game
         {
             Guid = Guid.NewGuid();
             rectTransform = GetComponent<RectTransform>();
-            imageRenderer = GetComponent<Image>();
-            overlayRenderer = transform.GetChild(0).GetComponent<Image>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            overlayRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         }
 
         public void SetVisible(bool _visible)
         {
-            imageRenderer.enabled = _visible;
+            spriteRenderer.enabled = _visible;
             overlayRenderer.enabled = _visible;
         }
 

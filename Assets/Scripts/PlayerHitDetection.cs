@@ -19,7 +19,7 @@ namespace Game
         void PlayerHit(RealProjectile _realProjectile, CARDINAL _receptionDir)
         {
             Debug.Log(_receptionDir);
-            UIController.instance.ShootInUI(_receptionDir);
+            UIController.instance.ShootInUI(_receptionDir, _realProjectile.type);
         }
     }
 }

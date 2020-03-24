@@ -7,4 +7,11 @@
         South = 2,
         West = 3,
     }
+
+    public enum PROJTYPE
+    {
+        Fire = 0,
+        Rock = 1,
+        Coin = 2
+    }
 }

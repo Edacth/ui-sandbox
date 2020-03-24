@@ -14,11 +14,11 @@ namespace Game
             UIObjectInit();
         }
 
-        public void Shoot()
+        public void Shoot(PROJTYPE _type)
         {
             if ( UIProjecile == null ) { Debug.LogError("UIProjectile is null", this); return; }
             UIProjectile projectile = Instantiate(UIProjecile, UIController.instance.canvas.transform).GetComponent<UIProjectile>();
-            projectile.Init(rectTransform.position, direction, 0.1f);
+            projectile.Init(rectTransform.position, direction, _type, 0.1f);
         }
     }
 }

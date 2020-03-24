@@ -7,6 +7,7 @@ namespace Game
     public class RealShooter : MonoBehaviour
     {
         public CARDINAL direction;
+        [SerializeField] PROJTYPE type;
         [SerializeField] GameObject projectile;
         [SerializeField] float shootInterval;
         float shootTime;
@@ -14,6 +15,7 @@ namespace Game
         private void Start()
         {
             shootTime = Time.time;
+            transform.eulerAngles = DirectionDict.rotDict[direction];
         }
 
         private void FixedUpdate()
@@ -29,7 +31,7 @@ namespace Game
         {
             if (projectile == null) { Debug.LogError("UIProjectile is null", this); return; }
             RealProjectile _projectile = Instantiate(projectile).GetComponent<RealProjectile>();
-            _projectile.Init(transform.position, direction, 0.1f);
+            _projectile.Init(transform.position, direction, type , 0.1f);
         }
     }
 }
